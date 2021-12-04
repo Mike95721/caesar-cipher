@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Caesar Cipher</title>
+
+    <style>
+      html {
+        --primary: #248d24be;
+        --font: "Roboto+Condens";
+        --dark: #333;
+        --gray: rgba(54, 46, 46, 0.459);
+        --white: #fff;
+        --darkGray: #aaa2aa;
+      }
+
+      body {
+        min-height: 100vh;
+        background: linear-gradient(180deg, #fff 80%, #ff7 100%);
+        font-family: var(--font);
+        background-image: img src= "C-Cipher.jpg";
+        background-color: #cccccc;
+        background-repeat: no-repeat;
+        background-position: calc(100% + 150px) calc(100% + 50px);
+        background-size: 450px;
+        padding: 20px;
+      }
+
+      h1 {
+        color: var(--primary);
+        padding: 20px;
+        margin-top: 0px;
+        font-size: 4em;
+        font-weight: 100;
+      }
+
+      label {
+        margin: 20px;
+        color: var(--darkGray);
+      }
+
+      input {
+        display: block;
+        font-family: var(--font);
+        font-size: 2em;
+        padding: 10px;
+        font-weight: 100;
+        border: 3px solid var(--gray);
+        margin: 20px;
+        background-color: var(--white);
+        width: calc(100% - 65px);
+      }
+
+      #encrypted {
+        border-color: var(--dark);
+        background-color: var(--dark);
+        color: var(--white);
+      }
+
+      .mainContainer {
+        max-width: 1000px;
+        margin: 50px 0px;
+      }
+
+      hr {
+        border: 1px solid var(--primary);
+        margin: 50px 0px;
+      }
+
+      .C-Cipher img {
+        width: 500px;
+        display: block;
+        margin: 0 auto;
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mainContainer">
+      <h1>My Caesar Cipher</h1>
+
+      <label for="original">Original Message</label>
+      <input id="original" type="text" value="mike" />
+
+      <label for="shift">shift</label>
+      <input id="shift" type="number" value="2" placeholder="0" />
+
+      <hr />
+
+      <label for="encrypted">Encrypted Message</label>
+      <input id="encrypted" type="text" value="" readonly />
+
+      <a
+        class="C-Cipher"
+        href="https://i1.wp.com/howtoraiseahappygenius.com/wp-content/uploads/2016/09/caesar_decoder.jpg"
+      >
+        <img src="C-Cipher.jpg" />
+      </a>
+    </div>
+    <script>
+      let originalInput = document.querySelector("#original");
+      let shiftInput = document.querySelector("#shift");
+      let encryptedInput = document.querySelector("#encrypted");
+
+      let originalMessage = originalInput.value;
+
+      orginalInput.addEventListener("input", characterEntered, false);
+
+      function characterEntered(e) {
+        //to only respond to lower case letters
+        originalMessage = e.target.value;
+        originalMessage = originalMessage.toLowerCase();
+        originalMessage = originalMessage.replace(/[^a-z]/, "");
+
+        e.target.value = originalMessage;
+
+        startEncryption();
+      }
+
+      function startEncryption() {
+        let encryptedMessage = "";
+        let shift = 1;
+
+        for (letter of originalMessage) {
+          encryptedMessage += shiftLetter(letter, shift);
+        }
+
+        console.log("encryptedMessage");
+        encryptedInput.value = encryptedMessage;
+      }
+
+      startEncryption();
+
+      function shiftLetter(letter, shift) {
+        let newLetter = "";
+
+        let letterCode = letter.charCodeAt(0);
+        let newLetterCode = letterCode + (shift % 26);
+
+        if (newLetterCode < 97) {
+          //97 = charCode 'a'
+          newLetterCode += 26; //26 letters of alphabet so cycles back to 'z'
+        } else if (newLetterCode > 122) {
+          //if new letter goes beyond 'z' (charCode #122)
+          newLetterCode -= 26;
+        }
+
+        newLetter = String.fromCharCode(newLetterCode);
+
+        return newLetter;
+      }
+    </script>
+  </body>
+</html>
